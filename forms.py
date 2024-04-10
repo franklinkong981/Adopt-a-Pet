@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField, SelectField, URLField
+from wtforms.validators import InputRequired, Optional, URL, NumberRange
 
 class AddPetForm(FlaskForm):
     """Form for adding a pet for adoption. The pet will be available by default.
@@ -7,8 +8,8 @@ class AddPetForm(FlaskForm):
     Validation: Species is required, must be cat dog porcupine or turtle, pet name is required, photo URL must be in URL format,
     age must be between 0 and 30."""
 
-    name = StringField("Pet name")
-    species = SelectField("Species", choices=[('cat', 'Cat'), ('dog', 'Dog'), ('porcupine', 'Porcupine'), ('turtle', 'Turtle')])
-    photo_url = URLField("Photo URL")
-    age = IntegerField("Age of pet")
-    notes = StringField("Additional Notes")
+    name = StringField("Pet name", validators=[InputRequired(message="You must provide a name for the pet!")])
+    species = SelectField("Species", choices=[('cat', 'Cat'), ('dog', 'Dog'), ('porcupine', 'Porcupine'), ('turtle', 'Turtle')], validators=[InputRequired(message="Please provide a species name.")])
+    photo_url = URLField("Photo URL", validators=[Optional(), URL(message="The Photo URL must be a valid URL!")])
+    age = IntegerField("Age of pet", validators=[Optional(), NumberRange(min=0, max=30, message="The age of the pet must be an integer between 0 and 30!")])
+    notes = StringField("Additional Notes", validators=[Optional()])
