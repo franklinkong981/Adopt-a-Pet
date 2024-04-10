@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template,  redirect, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db,  connect_db
+from models import db,  connect_db, Pet
 # from forms import 
 
 app = Flask(__name__)
@@ -14,3 +14,9 @@ debug = DebugToolbarExtension(app)
 
 connect_db(app)
 app.app_context().push()
+
+@app.route('/')
+def list_pets():
+    """Shows the homepage which lists all the pets and shows their photos, names, and whether they're available."""
+    pets = Pet.query.all()
+    return render_template('homepage.html', pets=pets)
