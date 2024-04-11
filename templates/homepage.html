@@ -11,9 +11,9 @@
                 <h4 class="card-title">{{pet.name}}</h4>
                 <p class="card-text font-weight-bold">
                     {% if pet.available %}
-                        {{pet.name}} is available!
+                        <a href='/{{pet.id}}'>{{pet.name}}</a> is available!
                     {% else %}
-                        {{pet.name}} is not available!
+                        <a href='/{{pet.id}}'>{{pet.name}}</a> is not available!
                     {% endif %}
                 </p>
             </div>
