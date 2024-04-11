@@ -18,8 +18,9 @@ app.app_context().push()
 @app.route('/')
 def list_pets():
     """Shows the homepage which lists all the pets and shows their photos, names, and whether they're available."""
-    pets = Pet.query.all()
-    return render_template('homepage.html', pets=pets)
+    available_pets = Pet.query.filter(Pet.available == True)
+    unavailable_pets = Pet.query.filter(Pet.available == False)
+    return render_template('homepage.html', available_pets=available_pets, unavailable_pets=unavailable_pets)
 
 @app.route('/add', methods=['GET', 'POST'])
 def show_add_pet_form():
@@ -36,6 +37,7 @@ def show_add_pet_form():
         new_pet = Pet(name=name,species=species, photo_url=photo_url, age=age, notes=notes)
         db.session.add(new_pet)
         db.session.commit()
+        flash('Pet successfully added!')
         return redirect('/')
     else:
         return render_template('add_pet_form.html', form=form)
@@ -52,6 +54,7 @@ def show_pet_details_page(pet_id_number):
         pet_to_update.available = form.available.data
 
         db.session.commit()
+        flash('Pet successfully updated!')
         return redirect(f'/{pet_id_number}')
     else:
         return render_template('edit_pet_form.html', form=form, pet=pet_to_update)

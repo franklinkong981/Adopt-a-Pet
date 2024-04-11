@@ -4,7 +4,24 @@
 
 {% block content %}
     <h1 class="display-1">Welcome to Adopt-a-Pet!</h1>
-    {% for pet in pets %}
+    <h2 class="display-2">Available Pets</h2>
+    {% for pet in available_pets %}
+        <div class="card w-25">
+            <img class="card-img-top" src="{{pet.photo_url}}" alt="Photo of {{pet.name}}">
+            <div class="card-body">
+                <h4 class="card-title">{{pet.name}}</h4>
+                <p class="card-text font-weight-bold">
+                    {% if pet.available %}
+                        <a href='/{{pet.id}}'>{{pet.name}}</a> is available!
+                    {% else %}
+                        <a href='/{{pet.id}}'>{{pet.name}}</a> is not available!
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    {% endfor %}
+    <h2 class="display-2">Unavailable Pets</h2>
+    {% for pet in unavailable_pets %}
         <div class="card w-25">
             <img class="card-img-top" src="{{pet.photo_url}}" alt="Photo of {{pet.name}}">
             <div class="card-body">
